@@ -1,0 +1,38 @@
+language: cpp
+
+sudo: false
+
+compiler:
+  - clang
+  - gcc
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++
+      - libpq-dev
+      - postgresql-server-dev-all
+      - libsqlite3-dev
+
+install:
+  # g++ 4.8 on linux
+  #- if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
+  #- if [ "$CXX" = "g++" ]; then export CXX="g++-5"; fi
+
+before_script:
+  - mkdir -p ${TRAVIS_BUILD_DIR}/build
+  - mkdir -p ${TRAVIS_BUILD_DIR}/install
+  - cd ${TRAVIS_BUILD_DIR}/build
+  - cmake -DCMAKE_INSTALL_PREFIX:PATH=${TRAVIS_BUILD_DIR}/install ..
+
+env:
+  - PATH=${PATH}:${TRAVIS_BUILD_DIR}/install/bin
+
+script:
+  - env
+  - make
+  - make install
+  - cd ${TRAVIS_BUILD_DIR}/install
+  - pgToSqlite -h
