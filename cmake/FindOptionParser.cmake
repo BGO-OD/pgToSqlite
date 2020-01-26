@@ -6,6 +6,7 @@
 
 find_package(PkgConfig)
 pkg_check_modules(PC_OptionParser QUIET OptionParser)
+include(GNUInstallDirs)
 
 find_path(OptionParser_INCLUDE_DIR Options.h
   HINTS ${PC_OptionParser_INCLUDEDIR} ${PC_OptionParser_INCLUDE_DIRS})
@@ -29,7 +30,7 @@ if(OptionParser_FIND_REQUIRED AND "${OptionParser_LIBRARY}" STREQUAL "OptionPars
 			)
 		ExternalProject_Get_Property(OptionParser INSTALL_DIR)
 		set(OptionParser_INCLUDE_DIR ${INSTALL_DIR}/include/)
-		set(OptionParser_LIBRARY ${INSTALL_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}options_static${CMAKE_STATIC_LIBRARY_SUFFIX})
+		set(OptionParser_LIBRARY ${INSTALL_DIR}/${CMAKE_INSTALL_LIBDIR}/${CMAKE_STATIC_LIBRARY_PREFIX}options${CMAKE_STATIC_LIBRARY_SUFFIX})
 	endif()
 endif()
 
